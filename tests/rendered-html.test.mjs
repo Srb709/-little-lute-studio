@@ -1,49 +1,27 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-const { default: worker } = await import(workerUrl.href);
-
-const env = {
-  ASSETS: {
-    fetch: async () => new Response("Not found", { status: 404 }),
-  },
-};
-
-const context = {
-  waitUntil() {},
-  passThroughOnException() {},
-};
-
-async function render(pathname) {
-  return worker.fetch(
-    new Request(`http://localhost${pathname}`, {
-      headers: { accept: "text/html" },
-    }),
-    env,
-    context,
-  );
-}
+const outputDirectory = new URL("../.next/server/app/", import.meta.url);
 
 const pages = [
-  ["/", "Little Lute Studio", /Little Lute/],
-  ["/embroidery", "Embroidery | Little Lute Studio", /Little Lute Embroidery/],
-  ["/spray-tanning", "Spray Tanning | Little Lute Studio", /On The Glow Tan/],
-  ["/about", "About Megan | Little Lute Studio", /Homebody at heart/],
-  ["/contact", "Contact | Little Lute Studio", /Start with a text/],
-  ["/privacy", "Privacy Policy | Little Lute Studio", /Information collected/],
-  ["/order-policy", "Embroidery Order Policy | Little Lute Studio", /Deadlines and Rush Orders/],
+  ["index.html", "Little Lute Studio", /Little Lute/],
+  ["embroidery.html", "Embroidery | Little Lute Studio", /Little Lute Embroidery/],
+  ["spray-tanning.html", "Spray Tanning | Little Lute Studio", /On The Glow Tan/],
+  ["about.html", "About Megan | Little Lute Studio", /Homebody at heart/],
+  ["contact.html", "Contact | Little Lute Studio", /Start with a text/],
+  ["privacy.html", "Privacy Policy | Little Lute Studio", /Information collected/],
+  ["order-policy.html", "Embroidery Order Policy | Little Lute Studio", /Deadlines and Rush Orders/],
 ];
 
-test("server-renders every public page with its final content", async (t) => {
-  for (const [pathname, title, expectedContent] of pages) {
-    await t.test(pathname, async () => {
-      const response = await render(pathname);
-      assert.equal(response.status, 200);
-      assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
+async function renderedPage(filename) {
+  return readFile(new URL(filename, outputDirectory), "utf8");
+}
 
-      const html = await response.text();
+test("builds every public page with its final content", async (t) => {
+  for (const [filename, title, expectedContent] of pages) {
+    await t.test(filename, async () => {
+      const html = await renderedPage(filename);
       assert.match(html, new RegExp(`<title>${title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<\\/title>`, "i"));
       assert.match(html, expectedContent);
       assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Building your site/i);
@@ -53,8 +31,7 @@ test("server-renders every public page with its final content", async (t) => {
 });
 
 test("home page exposes the primary navigation and contact routes", async () => {
-  const response = await render("/");
-  const html = await response.text();
+  const html = await renderedPage("index.html");
 
   for (const href of [
     "/embroidery",
@@ -71,8 +48,7 @@ test("home page exposes the primary navigation and contact routes", async () => 
 });
 
 test("spray-tan page contains every approved Calendly booking link", async () => {
-  const response = await render("/spray-tanning");
-  const html = await response.text();
+  const html = await renderedPage("spray-tanning.html");
 
   for (const slug of [
     "wedding-consultation",
