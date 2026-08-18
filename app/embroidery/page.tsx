@@ -1,14 +1,14 @@
 import { Footer, PageIntro } from "../site-components";
-import Image from "next/image";
+import { EmbroideryGallery, type EmbroideryDesign } from "./embroidery-gallery";
 
-const designs = [
-  ["/embroidery/pet-portrait.png", "Custom Pet Portrait", "Custom favorites"],
-  ["/embroidery/baby-rompers.png", "Personalized Baby Rompers", "Baby + little ones"],
-  ["/embroidery/wifey.png", "Wifey Est. 2026", "Bridal + celebrations"],
-  ["/embroidery/weekender.png", "Personalized Weekender", "Bags + accessories"],
-  ["/embroidery/mri-quarterzip.png", "MRI Technologist Quarter-Zip", "Business + professional"],
-  ["/embroidery/phillies-family.png", "Phillies Family Crewnecks", "Custom favorites"],
-] as const;
+const designs: EmbroideryDesign[] = [
+  { image: "/embroidery/pet-portrait.png", name: "Custom Pet Portrait", label: "Custom favorites", category: "cozy-apparel" },
+  { image: "/embroidery/baby-rompers.png", name: "Personalized Baby Rompers", label: "Baby + little ones", category: "baby" },
+  { image: "/embroidery/wifey.png", name: "Wifey Est. 2026", label: "Bridal + celebrations", category: "bridal" },
+  { image: "/embroidery/weekender.png", name: "Personalized Weekender", label: "Bags + accessories", category: "bags" },
+  { image: "/embroidery/mri-quarterzip.png", name: "MRI Technologist Quarter-Zip", label: "Business + professional", category: "business" },
+  { image: "/embroidery/phillies-family.png", name: "Phillies Family Crewnecks", label: "Custom favorites", category: "cozy-apparel" },
+];
 
 export const metadata = { title: "Embroidery" };
 
@@ -23,13 +23,7 @@ export default function Embroidery() {
         </PageIntro>
 
         <section className="section-shell">
-          <div className="section-topline">
-            <p className="section-label">Recent designs</p>
-            <div className="filters" aria-label="Embroidery gallery categories"><span>All</span><span>Cozy apparel</span><span>Baby</span><span>Bridal</span><span>Bags</span><span>Business</span></div>
-          </div>
-          <div className="gallery-grid">
-            {designs.map(([image, name, category]) => <article className="gallery-card" key={name}><Image src={image} alt={name} width={900} height={970} /><h3>{name}</h3><p>{category}</p></article>)}
-          </div>
+          <EmbroideryGallery designs={designs} />
         </section>
 
         <section className="content-grid">

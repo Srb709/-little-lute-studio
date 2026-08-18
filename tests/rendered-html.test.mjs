@@ -60,3 +60,22 @@ test("spray-tan page contains every approved Calendly booking link", async () =>
     assert.match(html, new RegExp(`https://calendly\\.com/contact-ontheglowtan/${slug}`));
   }
 });
+
+test("embroidery gallery exposes accessible category filters and enlargement controls", async () => {
+  const html = await renderedPage("embroidery.html");
+
+  for (const category of ["All", "Cozy apparel", "Baby", "Bridal", "Bags", "Business"]) {
+    assert.match(html, new RegExp(`>${category}<`, "i"));
+  }
+
+  for (const design of [
+    "Custom Pet Portrait",
+    "Personalized Baby Rompers",
+    "Wifey Est. 2026",
+    "Personalized Weekender",
+    "MRI Technologist Quarter-Zip",
+    "Phillies Family Crewnecks",
+  ]) {
+    assert.match(html, new RegExp(`aria-label=["']Enlarge ${design.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i"));
+  }
+});
