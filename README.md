@@ -9,7 +9,7 @@ The site has a clean editorial style with oversized typography, generous spacing
 
 ## Current status
 
-The complete first version is built and tested locally. It has not been connected to a public domain yet.
+The complete first version is built, tested, and live on the public domain.
 
 Current public pages:
 
@@ -229,35 +229,34 @@ Do not commit passwords, two-factor authentication codes, API keys, private toke
 
 The source repository and the public website are separate: pushing to GitHub stores the code, while a hosting provider publishes it to a web address.
 
-Current Vercel review address: [`https://little-lute-studio.vercel.app`](https://little-lute-studio.vercel.app)
+Public website: [`https://www.littlelutestudio.com`](https://www.littlelutestudio.com)
 
-The GitHub repository is connected to the Vercel project `little-lute-studio`. The initial Vercel build completed successfully from commit `6cffa5e`. Before connecting the final custom domain:
+The GitHub repository is connected to the Vercel project `little-lute-studio`. Vercel automatically deploys production updates from the `main` branch. The root domain permanently redirects to the preferred `www` address, and Vercel manages HTTPS automatically.
 
-1. Connect this GitHub repository to the selected hosting provider.
-2. Confirm Vercel detects the native Next.js project and uses `pnpm build`.
-3. Create a private preview deployment first.
-4. Check all seven pages on desktop and mobile using the preview URL.
-5. Recheck every live contact and Calendly link.
-6. Connect the final domain only after Megan approves the preview.
-7. Enable HTTPS and verify the preferred domain redirects correctly.
-8. Repeat the complete production test after the domain is live.
+Current launch configuration:
+
+- Production source: the GitHub `main` branch
+- Preferred address: [`https://www.littlelutestudio.com`](https://www.littlelutestudio.com)
+- Redirect: `https://littlelutestudio.com` permanently redirects to the preferred `www` address
+- Hosting, deployment, CDN, and HTTPS: Vercel
+- Domain registration and automatic renewal: Vercel
 
 No secret is currently required to render this website. If a future service requires a key, save it only in the hosting provider's encrypted environment-variable settings—never in this repository.
 
 ## Launch checklist
 
-- [ ] Megan approves the final desktop website
-- [ ] Megan approves the final mobile website
-- [ ] Contact phone, email, and Instagram are current
-- [ ] Spray-tan prices are current
-- [ ] Embroidery turnaround and policy are current
-- [ ] All five Calendly events open correctly
-- [ ] Every published customer image and review has permission
-- [ ] `pnpm lint` passes
-- [ ] `pnpm test` passes
+- [x] Megan approves the final desktop website
+- [x] Megan approves the final mobile website
+- [x] Contact phone, email, and Instagram are current
+- [x] Spray-tan prices are current
+- [x] Embroidery turnaround and policy are current
+- [x] All five Calendly events open correctly
+- [x] Every published customer image and review has permission
+- [x] `pnpm lint` passes
+- [x] `pnpm test` passes
 - [x] Vercel deployment has no sideways scrolling or overlapping content at the tested desktop and phone widths
 - [ ] Privacy and order policies receive any desired professional legal review
-- [ ] Final domain is connected and HTTPS works
+- [x] Final domain is connected and HTTPS works
 
 ## Safety and ownership notes
 
